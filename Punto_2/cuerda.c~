@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <string.h>
+
+#define T 40
+#define rho 10
+#define L 100
+#define deltax 1
+#define deltat 0.5
+#define c 0.5
+
+int main()
+{
+  int t = 200;
+  float *uinicial;
+  uinicial = malloc(100000);
+
+  float *u_jb;
+  u_jb = malloc(100000);
+
+  float *u_jn;
+  u_jn = malloc(100000);
+  
+  float alpha = pow(c,2)*(pow(deltat,2)/pow(deltax,2));
+  
+  int i;
+  int puntos = L/deltax;
+  for(i=0;i<puntos;i++)
+    {
+      if(i <= 0.8*L)
+	{
+	  uinicial[i] = (float)1.25*i/L;
+	  printf("%f \n",uinicial[i]);
+	}
+      else
+	{
+	  uinicial[i] = (float)5 - 5.0*i/L;
+	  printf("%f \n",uinicial[i]);
+	}
+    }
+
+  float j;
+  for(j=0;j<t;j+=deltat)
+    {
+      for(i=0;i<puntos;i++)
+	{
+	  if(j==0)
+	    {
+	      u_jb[i] = (float)((pow(alpha,2))*(uinicial[(i+1)%1000]-2*uinicial[i] + uinicial[i-1] + 2*uinicial[i]))/2;
+	    }
+	  else
+	    {
+	      u_jn[i] = (float)2*(1-pow(alpha,2))*uinicial[i] - u_jb[i] +(pow(alpha,2))*(uinicial[(i+1)%1000] + uinicial[i-1]);
+	      if((int)j %20)
+		{
+		  printf("%f \n",u_jn[i]);
+		}
+	    }
+	}
+
+      if(j!=0)
+      {
+	memcpy(u_jb,uinicial,100000);
+	memcpy(uinicial,u_jn,100000);
+      }
+    }
+  return 0;
+}

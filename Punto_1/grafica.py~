@@ -1,0 +1,21 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+data = np.loadtxt("data.dat")
+z = np.split(data,500)
+A = np.matrix(z[:250])
+B = np.matrix(z[250:])
+
+fig = plt.figure()
+ax = fig.add_subplot(1,1,1)
+ax.set_aspect('equal')
+plt.imshow(A, interpolation='nearest', cmap=plt.cm.ocean)
+#plt.streamplot(z[:125],z[125:250],z[250:375],z[375:500])
+#plt.imshow(B, interpolation='nearest', cmap=plt.cm.ocean)
+plt.colorbar()
+plt.savefig("placas.pdf")
+plt.show()
+
+
+
+

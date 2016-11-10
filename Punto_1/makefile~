@@ -1,0 +1,11 @@
+grafica.py : data.dat
+	python grafica.py
+
+data.dat : a.out
+	./a.out > data.dat
+
+a.out : placas.c
+	gcc placas.c -lm 
+
+clean:
+	rm -f a.out placas.pdf data.dat electricoA.dat electricoB.dat
